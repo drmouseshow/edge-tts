@@ -98,12 +98,12 @@ async def amain() -> None:
         help=f"voice for TTS. Default: {DEFAULT_VOICE}",
         default=DEFAULT_VOICE,
     )
-    group.add_argument(
-        "-l",
+    parser.add_argument(        
         "--list-voices",
         help="lists available voices and exits",
         action="store_true",
     )
+    parser.add_argument("-lang",help="language for TTS. Default: en-US", default="en-US")
     parser.add_argument("--rate", help="set TTS rate. Default +0%%.", default="+0%")
     parser.add_argument("--volume", help="set TTS volume. Default +0%%.", default="+0%")
     parser.add_argument("--pitch", help="set TTS pitch. Default +0Hz.", default="+0Hz")

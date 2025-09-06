@@ -251,13 +251,14 @@ def split_text_by_byte_length(
         yield remaining_chunk
 
 
-def mkssml(tc: TTSConfig, escaped_text: Union[str, bytes]) -> str:
+def mkssml(tc: TTSConfig, lang:str, escaped_text: Union[str, bytes]) -> str:
     """
     Creates a SSML string from the given parameters.
 
     Args:
         tc (TTSConfig): The TTS configuration.
         escaped_text (str or bytes): The escaped text. If bytes, it must be UTF-8 encoded.
+        lang (str): The language code for the SSML.
 
     Returns:
         str: The SSML string.
@@ -266,11 +267,13 @@ def mkssml(tc: TTSConfig, escaped_text: Union[str, bytes]) -> str:
         escaped_text = escaped_text.decode("utf-8")
 
     return (
-        "<speak version='1.0' xmlns='http://www.w3.org/2001/10/synthesis' xml:lang='en-US'>"
+        f"<speak version='1.0' xmlns='http://www.w3.org/2001/10/synthesis' xml:lang='{lang}'>"
         f"<voice name='{tc.voice}'>"
+        f"<lang xml:lang='{lang}'>"
         f"<prosody pitch='{tc.pitch}' rate='{tc.rate}' volume='{tc.volume}'>"
         f"{escaped_text}"
         "</prosody>"
+        "</lang>"
         "</voice>"
         "</speak>"
     )
@@ -328,9 +331,12 @@ class Communicate:
         proxy: Optional[str] = None,
         connect_timeout: Optional[int] = 10,
         receive_timeout: Optional[int] = 60,
+        lang: str = "en-US",
     ):
         # Validate TTS settings and store the TTSConfig object.
         self.tts_config = TTSConfig(voice, rate, volume, pitch, boundary)
+
+        self.lang = lang
 
         # Validate the text parameter.
         if not isinstance(text, str):
@@ -416,6 +422,7 @@ class Communicate:
                     date_to_string(),
                     mkssml(
                         self.tts_config,
+                        self.lang,
                         self.state["partial_text"],
                     ),
                 )
