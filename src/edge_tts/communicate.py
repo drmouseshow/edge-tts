@@ -265,6 +265,10 @@ def mkssml(tc: TTSConfig, lang:str, escaped_text: Union[str, bytes]) -> str:
     """
     if isinstance(escaped_text, bytes):
         escaped_text = escaped_text.decode("utf-8")
+    
+    pause = ""
+
+    escaped_text = escaped_text.replace("|","<break time='500ms' />")
 
     return (
         f"<speak version='1.0' xmlns='http://www.w3.org/2001/10/synthesis' xml:lang='{lang}'>"
@@ -326,16 +330,15 @@ class Communicate:
         rate: str = "+0%",
         volume: str = "+0%",
         pitch: str = "+0Hz",
+        lang: str = "en-US",
         boundary: Literal["WordBoundary", "SentenceBoundary"] = "SentenceBoundary",
         connector: Optional[aiohttp.BaseConnector] = None,
         proxy: Optional[str] = None,
         connect_timeout: Optional[int] = 10,
-        receive_timeout: Optional[int] = 60,
-        lang: str = "en-US",
+        receive_timeout: Optional[int] = 60
     ):
         # Validate TTS settings and store the TTSConfig object.
         self.tts_config = TTSConfig(voice, rate, volume, pitch, boundary)
-
         self.lang = lang
 
         # Validate the text parameter.

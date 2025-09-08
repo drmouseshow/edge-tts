@@ -53,6 +53,7 @@ async def _run_tts(args: UtilArgs) -> None:
         volume=args.volume,
         pitch=args.pitch,
         proxy=args.proxy,
+        lang=args.lang,
     )
     submaker = SubMaker()
     try:
@@ -93,7 +94,6 @@ async def amain() -> None:
     group.add_argument("-t", "--text", help="what TTS will say")
     group.add_argument("-f", "--file", help="same as --text but read from file")
     parser.add_argument(
-        "-v",
         "--voice",
         help=f"voice for TTS. Default: {DEFAULT_VOICE}",
         default=DEFAULT_VOICE,
@@ -103,7 +103,7 @@ async def amain() -> None:
         help="lists available voices and exits",
         action="store_true",
     )
-    parser.add_argument("-lang",help="language for TTS. Default: en-US", default="en-US")
+    parser.add_argument("--lang",help="language for TTS. Default: en-US", default="en-US")
     parser.add_argument("--rate", help="set TTS rate. Default +0%%.", default="+0%")
     parser.add_argument("--volume", help="set TTS volume. Default +0%%.", default="+0%")
     parser.add_argument("--pitch", help="set TTS pitch. Default +0Hz.", default="+0Hz")
@@ -115,7 +115,7 @@ async def amain() -> None:
         help="send subtitle output to provided file instead of stderr",
     )
     parser.add_argument("--proxy", help="use a proxy for TTS and voice list.")
-    args = parser.parse_args(namespace=UtilArgs())
+    args = parser.parse_args(namespace=UtilArgs())    
 
     if args.list_voices:
         await _print_voices(proxy=args.proxy)
