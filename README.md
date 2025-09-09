@@ -2,6 +2,13 @@
 
 `edge-tts` is a Python module that allows you to use Microsoft Edge's online text-to-speech service from within your Python code or using the provided `edge-tts` or `edge-playback` command.
 
+## Build
+ $ pip install buildtools
+ $ pip install build
+ $ pip instal setuptools
+
+ $python -m build
+
 ## Installation
 
 To install it, run the following command:
