@@ -4,8 +4,10 @@
 
 ## Build
  $ pip install buildtools
+ 
  $ pip install build
- $ pip instal setuptools
+ 
+ $ pip install setuptools
 
  $python -m build
 
